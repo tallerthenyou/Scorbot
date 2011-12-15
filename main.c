@@ -68,11 +68,12 @@ int main() {
 			}
 			printw("typed: %c - 0x%02x\n\r", c, c);
 			if ( serial_fd != -1 ) {
-			  write(serial_fd, input, length);
+			  write(serial_fd, &c, 1);
 			}
 		}
 		kill(pid);
 		wait(pid);
+		endwin();
 	}
 
 	close(serial_fd);
