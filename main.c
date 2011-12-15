@@ -6,13 +6,10 @@
 #include <errno.h>
 #include <ncurses.h>
 
-#define INPUT_MAX_SIZE 100
-
 int main() {
 	int pid;
 	int serial_fd;
 	struct termios scorbot_config;
-	char input[INPUT_MAX_SIZE];
 	char c;
 
 	const char *device = "/dev/tty.usbserial-A900IKU8";
@@ -73,11 +70,6 @@ int main() {
 			if ( serial_fd != -1 ) {
 			  write(serial_fd, input, length);
 			}
-//			fprintf(stdout, "sending:\n");
-//			int i;
-//			for ( i = 0; i < length; i++ ) {
-//				fprintf(stdout, "%c - %02x\n", input[i], input[i]);
-//			}
 		}
 		kill(pid);
 		wait(pid);
