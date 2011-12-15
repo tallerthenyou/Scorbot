@@ -8,6 +8,17 @@
 
 #define INPUT_MAX_SIZE 100
 
+int fsend(int fd, char* string) {
+	int length = strlen(string);
+	string[length] = '\r';
+
+	write(fd, string, length + 1);
+//	int i;
+//	for ( i = 0; i <= length; i++ ) {
+//		printf("%c - 0x%02X\n", string[i], string[i]);
+//	}
+}
+
 int main(int argc, char** argv) {
 	int c = getopt (argc, argv, "d:");
 	if ( c != 'd' ) {
@@ -46,20 +57,14 @@ int main(int argc, char** argv) {
 
 	int length;
 	if ( argc > 3 ) {
-		int i;
-		for ( i = 3; i < argc; i++ ) {
-			length = strlen(argv[3]);
-			write(serial_fd, argv[3], length);
-		}
-		write(serial_fd, '\r', 1);
+		length = strlen(argv[3]);
+		fsend(serial_fd, argv[3]);
 	}
 	else {
 		while ( fgets(input, INPUT_MAX_SIZE, stdin) != NULL ) {
 			length = strlen(input);
-			input[length - 1] = '\r';
-
-			write(serial_fd, input, length);
-			// printf("sent: %s\n", input);
+			input[length - 1] = '\0';
+			fsend(serial_fd, input);
 		}
 	}
 
